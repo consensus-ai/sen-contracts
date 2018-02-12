@@ -1,0 +1,55 @@
+{
+  "license": "GPL-3.0",
+  "scripts": {
+    "compile": "truffle compile",
+    "migrate": "truffle migrate --reset",
+    "develop": "truffle develop",
+    "test": "truffle test",
+    "eslint": "eslint \"test/**/*.js\"",
+    "eslint-fix": "eslint --fix \"test/**/*.js\"",
+    "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
+    "solium": "solium -d contracts",
+    "lint": "yarn eslint",
+    "precommit": "yarn lint && yarn solium",
+    "prepush": "yarn lint && yarn solium"
+  },
+  "devDependencies": {
+    "bignumber.js": "^4.1.0",
+    "eslint": "^4.12.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "husky": "^0.14.3",
+    "prettier": "^1.8.2",
+    "solium": "^1.0.9",
+    "truffle": "^4.0.6"
+  },
+  "dependencies": {},
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "eslintConfig": {
+    "extends": [
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 2017,
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "semi": false
+        }
+      ]
+    }
+  }
+}
