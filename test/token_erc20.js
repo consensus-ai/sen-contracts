@@ -2,6 +2,8 @@ const TokenName = 'SEN'
 const Token = artifacts.require(TokenName)
 const BigNumber = require('bignumber.js')
 
+const assertFail = require('./helpers/assertFail')
+
 let token
 
 contract(TokenName, function(accounts) {
@@ -135,16 +137,20 @@ contract(TokenName, function(accounts) {
     assert.equal((await token.balanceOf.call(accounts[0])).toNumber(), 60e18)
 
     // Trying to transfer 60 more tokens should fail, because only 50 allowed by now
-    await token.transferFrom.call(accounts[0], accounts[2], 60e18, {
-      from: accounts[1]
+    await assertFail(async () => {
+      await token.transferFrom.call(accounts[0], accounts[2], 60e18, {
+        from: accounts[1]
+      })
     })
     assert.equal((await token.balanceOf.call(accounts[2])).toNumber(), 40e18)
     assert.equal((await token.balanceOf.call(accounts[0])).toNumber(), 60e18)
   })
 
   it('approvals: attempt withdrawal from account with no allowance (should fail)', async () => {
-    await token.transferFrom.call(accounts[0], accounts[2], 60e18, {
-      from: accounts[1]
+    await assertFail(async () => {
+      await token.transferFrom.call(accounts[0], accounts[2], 60e18, {
+        from: accounts[1]
+      })
     })
     assert.equal((await token.balanceOf.call(accounts[0])).toNumber(), 100e18)
   })
@@ -157,8 +163,10 @@ contract(TokenName, function(accounts) {
 
     // Reset approval. Following transfers should fail
     await token.approve(accounts[1], 0, { from: accounts[0] })
-    await token.transferFrom.call(accounts[0], accounts[2], 10e18, {
-      from: accounts[1]
+    await assertFail(async () => {
+      await token.transferFrom.call(accounts[0], accounts[2], 10e18, {
+        from: accounts[1]
+      })
     })
     assert.equal((await token.balanceOf.call(accounts[0])).toNumber(), 40e18)
   })

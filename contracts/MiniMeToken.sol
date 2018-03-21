@@ -131,9 +131,7 @@ contract MiniMeToken is MiniMeTokenI {
     if (msg.sender != controller) {
 
       // The standard ERC 20 transferFrom functionality
-      if (allowed[_from][msg.sender] < _amount)
-        return false;
-
+      require(allowed[_from][msg.sender] >= _amount);
       allowed[_from][msg.sender] -= _amount;
     }
     return doTransfer(_from, _to, _amount);
