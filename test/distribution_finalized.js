@@ -55,7 +55,7 @@ contract('Distribution', function(accounts) {
       totalSupplyCap -
         totalReserve -
         (await token.totalSupply.call()).toNumber(),
-      txid2
+      txId2
     )
 
     // attempt to finalize with not-a-controller address before reaching cap
