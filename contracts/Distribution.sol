@@ -28,8 +28,8 @@ contract Distribution is Controlled, TokenController {
   /// Record tx details for each minting operation
   struct Transaction {
     uint256 amount;
-    string paidCurrency;
-    string paidTxID;
+    bytes32 paidCurrency;
+    bytes32 paidTxID;
   }
 
   MiniMeTokenI public token;
@@ -97,8 +97,8 @@ contract Distribution is Controlled, TokenController {
   function proxyMintTokens(
     address _th,
     uint256 _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidCurrency,
+    bytes32 _paidTxID
   ) public onlyController returns (bool)
   {
     require(_th != 0x0);
@@ -164,8 +164,8 @@ contract Distribution is Controlled, TokenController {
   /// Query a transaction details by address and its index in transactions array
   function getTransactionAtIndex(address _owner, uint index) public constant returns(
     uint256 _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidCurrency,
+    bytes32 _paidTxID
   ) {
     _amount = allTransactions[_owner][index].amount;
     _paidCurrency = allTransactions[_owner][index].paidCurrency;
@@ -180,8 +180,8 @@ contract Distribution is Controlled, TokenController {
   function addTransaction(
     Transaction[] storage transactions,
     uint _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidCurrency,
+    bytes32 _paidTxID
     ) internal
   {
     Transaction storage newTx = transactions[transactions.length++];
@@ -209,8 +209,8 @@ contract Distribution is Controlled, TokenController {
   event Purchase(
     address indexed _owner,
     uint256 _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidCurrency,
+    bytes32 _paidTxID
   );
   event Finalized();
 }
