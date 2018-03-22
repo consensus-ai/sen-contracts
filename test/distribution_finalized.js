@@ -10,10 +10,12 @@ let reserveWallet
 
 const totalSupplyCap = 100e18
 const totalReserve = 10e18
-const btcTxID =
-  'b9f7ea9a794eaf4174efcb035ea3f1b95a689420ec5758e426c0bf86f1d54a8d'
-const ltcTxID =
-  'abcfd320f69bc65522845164e19a65103edc38ca38e31c6ff2a2eb8a17891206'
+const txId1 =
+  '0xc4ea08f7ce04082c6934c0069a814c1300dd149721f9828b8b8a5764f04b6c0e'
+const txId2 =
+  '0x350ebf97f24e98b1e8e250e97f33e29b00c5975ce3f13c4851b7135ab0e7465e'
+const txId3 =
+  '0x1a8830949c4cc2438b91ce54626027a4fcb631d2b2d5424ef40461ac848de061'
 
 contract('Distribution', function(accounts) {
   beforeEach(async () => {
@@ -36,7 +38,7 @@ contract('Distribution', function(accounts) {
     assert.equal(await distribution.controller(), accounts[0])
     assert.equal(await distribution.distributionCap(), 90e18)
 
-    await distribution.proxyMintTokens(accounts[1], 80e18, 'BTC', btcTxID)
+    await distribution.proxyMintTokens(accounts[1], 80e18, txId1)
 
     // attempt to finalize with not-a-controller address before reaching cap
     await assertFail(async () => {
@@ -53,8 +55,7 @@ contract('Distribution', function(accounts) {
       totalSupplyCap -
         totalReserve -
         (await token.totalSupply.call()).toNumber(),
-      'LTC',
-      ltcTxID
+      txId2
     )
 
     // attempt to finalize with not-a-controller address before reaching cap
@@ -75,8 +76,7 @@ contract('Distribution', function(accounts) {
       totalSupplyCap -
         totalReserve -
         (await token.totalSupply.call()).toNumber(),
-      'LTC',
-      ltcTxID
+      txId1
     )
     await distribution.finalize()
 
@@ -94,8 +94,7 @@ contract('Distribution', function(accounts) {
       totalSupplyCap -
         totalReserve -
         (await token.totalSupply.call()).toNumber(),
-      'BTC',
-      btcTxID
+      txId1
     )
     await distribution.finalize()
 
@@ -107,7 +106,7 @@ contract('Distribution', function(accounts) {
 
   it('Tokens can NOT be minted after finalizing', async () => {
     assert.equal(await distribution.controller(), accounts[0])
-    await distribution.proxyMintTokens(accounts[1], 50e18, 'BTC', btcTxID)
+    await distribution.proxyMintTokens(accounts[1], 50e18, txId1)
 
     assert.equal((await token.balanceOf.call(accounts[1])).toNumber(), 50e18)
     assert.equal((await token.totalSupply.call()).toNumber(), 50e18)
@@ -118,14 +117,13 @@ contract('Distribution', function(accounts) {
       totalSupplyCap -
         totalReserve -
         (await token.totalSupply.call()).toNumber(),
-      'BTC',
-      btcTxID
+      txId2
     )
     await distribution.finalize({ from: accounts[0] })
 
     // Cannot mint throught Distribution
     await assertFail(async () => {
-      await distribution.proxyMintTokens(accounts[1], 50e18, 'LTC', ltcTxID)
+      await distribution.proxyMintTokens(accounts[1], 50e18, txId3)
     })
     // Cannot mint directly
     await assertFail(async () => {
@@ -138,7 +136,7 @@ contract('Distribution', function(accounts) {
 
   it('Transfer is allowed after finalize olny', async () => {
     assert.equal(await distribution.controller(), accounts[0])
-    await distribution.proxyMintTokens(accounts[1], 50e18, 'BTC', btcTxID)
+    await distribution.proxyMintTokens(accounts[1], 50e18, txId1)
 
     // transfer before finalizing
     await assertFail(async () => {
@@ -151,8 +149,7 @@ contract('Distribution', function(accounts) {
       totalSupplyCap -
         totalReserve -
         (await token.totalSupply.call()).toNumber(),
-      'BTC',
-      btcTxID
+      txId2
     )
     await distribution.finalize({ from: accounts[0] })
 

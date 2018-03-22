@@ -9,8 +9,8 @@ let distribution
 
 const totalSupplyCap = 600e18
 const totalReserve = 60e18
-const btcTxID =
-  'b9f7ea9a794eaf4174efcb035ea3f1b95a689420ec5758e426c0bf86f1d54a8d'
+const txId =
+  '0xc4ea08f7ce04082c6934c0069a814c1300dd149721f9828b8b8a5764f04b6c0e'
 
 contract('Distribution', function(accounts) {
   beforeEach(async () => {
@@ -38,7 +38,7 @@ contract('Distribution', function(accounts) {
     // Mint whole tokens supply for an account
     const minted = totalSupplyCap - totalReserve
     assert.isAbove(minted, 50e18) // ensure we have anough tokens to play with
-    await distribution.proxyMintTokens(accounts[2], minted, 'BTC', btcTxID)
+    await distribution.proxyMintTokens(accounts[2], minted, txId)
     assert.equal((await sen.balanceOf.call(accounts[2])).toNumber(), minted)
 
     // Then filalize to make tokens transferable

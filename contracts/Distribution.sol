@@ -28,8 +28,7 @@ contract Distribution is Controlled, TokenController {
   /// Record tx details for each minting operation
   struct Transaction {
     uint256 amount;
-    string paidCurrency;
-    string paidTxID;
+    bytes32 paidTxID;
   }
 
   MiniMeTokenI public token;
@@ -97,8 +96,7 @@ contract Distribution is Controlled, TokenController {
   function proxyMintTokens(
     address _th,
     uint256 _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidTxID
   ) public onlyController returns (bool)
   {
     require(_th != 0x0);
@@ -109,13 +107,11 @@ contract Distribution is Controlled, TokenController {
     addTransaction(
       allTransactions[_th],
       _amount,
-      _paidCurrency,
       _paidTxID);
 
     Purchase(
       _th,
       _amount,
-      _paidCurrency,
       _paidTxID);
 
     return true;
@@ -164,29 +160,24 @@ contract Distribution is Controlled, TokenController {
   /// Query a transaction details by address and its index in transactions array
   function getTransactionAtIndex(address _owner, uint index) public constant returns(
     uint256 _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidTxID
   ) {
     _amount = allTransactions[_owner][index].amount;
-    _paidCurrency = allTransactions[_owner][index].paidCurrency;
     _paidTxID = allTransactions[_owner][index].paidTxID;
   }
 
   /// Save transaction details belong to an address
   /// @param  transactions all transactions belong to an address
   /// @param _amount amount of tokens issued in the transaction
-  /// @param _paidCurrency currency paid, e.g.: BTC, LTC, ETH, etc
-  /// @param _paidTxID blockchain tx_hash in _paidCurrency blockchain
+  /// @param _paidTxID blockchain tx_hash
   function addTransaction(
     Transaction[] storage transactions,
     uint _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidTxID
     ) internal
   {
     Transaction storage newTx = transactions[transactions.length++];
     newTx.amount = _amount;
-    newTx.paidCurrency = _paidCurrency;
     newTx.paidTxID = _paidTxID;
   }
 
@@ -209,8 +200,7 @@ contract Distribution is Controlled, TokenController {
   event Purchase(
     address indexed _owner,
     uint256 _amount,
-    string _paidCurrency,
-    string _paidTxID
+    bytes32 _paidTxID
   );
   event Finalized();
 }

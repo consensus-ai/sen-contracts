@@ -17,7 +17,7 @@ contract('Distribution Initialize', function(accounts) {
 
   it('Reserve should be less than total supply cap', async () => {
     await assertFail(async () => {
-      distribution = await Distribution.new(
+      const distribution = await Distribution.new(
         token.address,
         accounts[9],
         totalSupplyCap,
@@ -27,7 +27,7 @@ contract('Distribution Initialize', function(accounts) {
   })
 
   it('Distribution cap is a diffence between total supply cap and reserve', async () => {
-    distribution = await Distribution.new(
+    const distribution = await Distribution.new(
       token.address,
       accounts[9],
       totalSupplyCap,
@@ -44,7 +44,7 @@ contract('Distribution Initialize', function(accounts) {
     assert.equal((await token.totalSupply()).toNumber(), 10e18)
 
     await assertFail(async () => {
-      distribution = await Distribution.new(
+      const distribution = await Distribution.new(
         token.address,
         accounts[9],
         totalSupplyCap,

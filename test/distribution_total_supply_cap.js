@@ -9,8 +9,10 @@ let distribution
 
 const totalSupplyCap = 110e18
 const totalReserve = 10e18
-const btcTxID =
-  'b9f7ea9a794eaf4174efcb035ea3f1b95a689420ec5758e426c0bf86f1d54a8d'
+const txId1 =
+  '0xc4ea08f7ce04082c6934c0069a814c1300dd149721f9828b8b8a5764f04b6c0e'
+const txId2 =
+  '0x350ebf97f24e98b1e8e250e97f33e29b00c5975ce3f13c4851b7135ab0e7465e'
 
 contract('Distribution', function(accounts) {
   beforeEach(async () => {
@@ -32,7 +34,7 @@ contract('Distribution', function(accounts) {
     assert.equal(await distribution.controller(), accounts[0])
 
     // Mint the total distribution cap
-    await distribution.proxyMintTokens(accounts[1], 100e18, 'BTC', btcTxID, {
+    await distribution.proxyMintTokens(accounts[1], 100e18, txId1, {
       from: accounts[0]
     })
     assert.equal((await token.balanceOf.call(accounts[1])).toNumber(), 100e18)
@@ -40,7 +42,7 @@ contract('Distribution', function(accounts) {
 
     // Mint exceed cap with smallest amount
     await assertFail(async () => {
-      await distribution.proxyMintTokens(accounts[1], 1, 'BTC', btcTxID, {
+      await distribution.proxyMintTokens(accounts[1], 1, txId2, {
         from: accounts[0]
       })
     })

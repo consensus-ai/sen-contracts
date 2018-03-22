@@ -9,8 +9,7 @@ contract TokenController {
   function proxyMintTokens(
     address _owner, 
     uint _amount,
-    string _paidCurrency,
-    string _paidTxID) public returns(bool);
+    bytes32 _paidTxID) public returns(bool);
 
     /// @notice Notifies the controller about a token transfer allowing the
     ///  controller to react if desired
