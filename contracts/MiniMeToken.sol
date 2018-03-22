@@ -123,19 +123,10 @@ contract MiniMeToken is MiniMeTokenI {
   /// @param _amount The amount of tokens to be transferred
   /// @return True if the transfer was successful
   function transferFrom(address _from, address _to, uint256 _amount) public returns (bool success) {
+    // The standard ERC 20 transferFrom functionality
+    require(allowed[_from][msg.sender] >= _amount);
+    allowed[_from][msg.sender] -= _amount;
 
-    // The controller of this contract can move tokens around at will,
-    //  this is important to recognize! Confirm that you trust the
-    //  controller of this contract, which in most situations should be
-    //  another open source smart contract or 0x0
-    if (msg.sender != controller) {
-
-      // The standard ERC 20 transferFrom functionality
-      if (allowed[_from][msg.sender] < _amount)
-        return false;
-
-      allowed[_from][msg.sender] -= _amount;
-    }
     return doTransfer(_from, _to, _amount);
   }
 
@@ -186,7 +177,7 @@ contract MiniMeToken is MiniMeTokenI {
 
   /// @param _owner The address that's balance is being requested
   /// @return The balance of `_owner` at the current block
-  function balanceOf(address _owner) public constant returns (uint256 balance) {
+  function balanceOf(address _owner) public view returns (uint256 balance) {
     return balanceOfAt(_owner, block.number);
   }
 
@@ -219,7 +210,7 @@ contract MiniMeToken is MiniMeTokenI {
   /// @param _spender The address of the account able to transfer the tokens
   /// @return Amount of remaining tokens of _owner that _spender is allowed
   ///  to spend
-  function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
+  function allowance(address _owner, address _spender) public view returns (uint256 remaining) {
     return allowed[_owner][_spender];
   }
 
@@ -245,7 +236,7 @@ contract MiniMeToken is MiniMeTokenI {
 
   /// @dev This function makes it easy to get the total number of tokens
   /// @return The total number of tokens
-  function totalSupply() public constant returns (uint) {
+  function totalSupply() public view returns (uint) {
     return totalSupplyAt(block.number);
   }
 
@@ -257,7 +248,7 @@ contract MiniMeToken is MiniMeTokenI {
   /// @param _owner The address from which the balance will be retrieved
   /// @param _blockNumber The block number when the balance is queried
   /// @return The balance at `_blockNumber`
-  function balanceOfAt(address _owner, uint _blockNumber) public constant returns (uint) {
+  function balanceOfAt(address _owner, uint _blockNumber) public view returns (uint) {
 
     // These next few lines are used when the balance of the token is
     //  requested before a check point was ever created for this token, it
@@ -282,7 +273,7 @@ contract MiniMeToken is MiniMeTokenI {
   /// @notice Total amount of tokens at a specific `_blockNumber`.
   /// @param _blockNumber The block number when the totalSupply is queried
   /// @return The total amount of tokens at `_blockNumber`
-  function totalSupplyAt(uint _blockNumber) public constant returns(uint) {
+  function totalSupplyAt(uint _blockNumber) public view returns(uint) {
 
     // These next few lines are used when the totalSupply of the token is
     //  requested before a check point was ever created for this token, it
@@ -345,7 +336,7 @@ contract MiniMeToken is MiniMeTokenI {
   /// @param checkpoints The history of values being queried
   /// @param _block The block number to retrieve the value at
   /// @return The number of tokens being queried
-  function getValueAt(Checkpoint[] storage checkpoints, uint _block) constant internal returns (uint) {
+  function getValueAt(Checkpoint[] storage checkpoints, uint _block) internal view returns (uint) {
     if (checkpoints.length == 0)
       return 0;
 
@@ -388,7 +379,7 @@ contract MiniMeToken is MiniMeTokenI {
   /// @dev Internal function to determine if an address is a contract
   /// @param _addr The address being queried
   /// @return True if `_addr` is a contract
-  function isContract(address _addr) constant internal returns(bool) {
+  function isContract(address _addr) internal view returns(bool) {
     uint size;
     if (_addr == 0)
       return false;
