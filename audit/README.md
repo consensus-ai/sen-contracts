@@ -4,7 +4,7 @@
 ## Preamble
 This audit report was undertaken by <b>BlockchainLabs.nz</b> for the purpose of providing feedback to <b>Mothership</b>. <br>It has subsequently been shared publicly without any express or implied warranty.
 
-Solidity contracts were sourced from the public Github repo [consensus-ai/sen-contracts](hhttps://github.com/consensus-ai/sen-contracts) prior to commit [b2cd76f851f44f421530eb31ad85e33235a87355](https://github.com/BlockchainLabsNZ/mothership-sen/tree/b2cd76f851f44f421530eb31ad85e33235a87355) - we would encourage all community members and token holders to make their own assessment of the contracts.
+Solidity contracts were sourced from the public Github repo [consensus-ai/sen-contracts](https://github.com/consensus-ai/sen-contracts) prior to commit [b2cd76f851f44f421530eb31ad85e33235a87355](https://github.com/BlockchainLabsNZ/mothership-sen/tree/b2cd76f851f44f421530eb31ad85e33235a87355) - we would encourage all community members and token holders to make their own assessment of the contracts.
 
 <br>
 
