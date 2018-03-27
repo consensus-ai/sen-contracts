@@ -1,4 +1,6 @@
 build/*
+keystore
+pass
 
 # Created by https://www.gitignore.io/api/node
 
