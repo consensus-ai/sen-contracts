@@ -2,6 +2,7 @@ pragma solidity ^0.4.18;
 
 /*
   Copyright 2017, Anton Egorov (Mothership Foundation)
+  Copyright 2017, An Hoang Phan Ngo (Mothership Foundation)
   Copyright 2017, Joel Mislav Kunst (Mothership Fundation)
   Copyright 2016, Jordi Baylina
 
