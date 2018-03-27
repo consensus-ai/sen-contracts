@@ -13,4 +13,5 @@ module.exports = async function(deployer) {
     totalSupplyCap,
     totalReserve
   )
+  await sen.changeController(distribution.address)
 }
