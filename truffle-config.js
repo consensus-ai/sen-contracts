@@ -25,6 +25,11 @@ module.exports = {
       provider: new WalletProvider(wallet, 'https://ropsten.infura.io/'),
       network_id: 3,
       gas: 4000000
+    },
+    mainnet: {
+      provider: new WalletProvider(wallet, 'https://mainnet.infura.io/'),
+      network_id: 1,
+      gas: 4000000
     }
   }
 }
